@@ -1,0 +1,21 @@
+# Unity Local Folders
+Temp/
+obj/
+Library/
+
+# Unity Files
+*.unityproj
+*.userprefs
+
+# Monodevelop & Visual Studio Files
+*.pidb
+*.csproj
+*.suo
+*.sln
+*.svd
+
+# AutoPilot Cache and Settings
+TestFlightMessage.txt
+TestFlightMobileProvisionCache.xml
+TestFlightTeamPreferences.xml
+TestFlightUserPreferences.xml
