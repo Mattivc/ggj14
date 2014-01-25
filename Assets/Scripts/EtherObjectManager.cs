@@ -13,7 +13,7 @@ public static class EtherObjectManager {
 			if ( GeometryUtility.TestPlanesAABB( frustum, obj.renderer.bounds ) && !IsBlocked( viewPoint, obj.renderer.bounds ) ) {
 				if ( !activeEtherObjects[colorID].Contains(obj) ) {
 					activeEtherObjects[colorID].Add( obj );
-					obj.currentEtherState[colorID] = true;
+                    obj.currentEtherState[colorID] = true;
 				}
 			} else if ( activeEtherObjects[colorID].Contains( obj ) ) {
 				activeEtherObjects[colorID].Remove( obj );
