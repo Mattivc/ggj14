@@ -76,12 +76,34 @@ public class PlayerController : MonoBehaviour {
 		playerRotations[0] = checkpointRotation;
 		playerRotations[1] = checkpointRotation;
 		playerRotations[2] = checkpointRotation;
+
+		UpdatePositions ();
 	}
 
 	public void RestartCheckpoint(){
 		fadeOut = true;
 		swapPlayer = null;
 		FadeStart();
+	}
+
+	private void UpdatePositions(){
+		if(currentPlayer != redPlayer){
+			redPlayer.transform.position = playerPositions[0];
+			redPlayer.transform.rotation = playerRotations[0];
+			redPlayer.GetComponent<CharacterController>().Move(Vector3.zero);
+		}
+
+		if(currentPlayer != yellowPlayer){
+			yellowPlayer.transform.position = playerPositions[1];
+			yellowPlayer.transform.rotation = playerRotations[1];
+			yellowPlayer.GetComponent<CharacterController>().Move(Vector3.zero);
+		}
+
+		if(currentPlayer != bluePlayer){
+			bluePlayer.transform.position = playerPositions[2];
+			bluePlayer.transform.rotation = playerRotations[2];
+			bluePlayer.GetComponent<CharacterController>().Move(Vector3.zero);
+		}
 	}
 
 	private void FadeStart(){
@@ -93,27 +115,18 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void SwapPlayer(GameObject newPlayer){
-			currentPlayer.transform.Find("Holder/Main Camera").gameObject.SetActive(false);
+		currentPlayer.transform.Find("Holder/Main Camera").gameObject.SetActive(false);
 
-			if(newPlayer != null){
-				currentPlayer = newPlayer;
-			}else{
-				redPlayer.transform.position = playerPositions[0];
-				redPlayer.transform.rotation = playerRotations[0];
-				redPlayer.GetComponent<CharacterController>().Move(Vector3.zero);
-				
-				yellowPlayer.transform.position = playerPositions[1];
-				yellowPlayer.transform.rotation = playerRotations[1];
-				yellowPlayer.GetComponent<CharacterController>().Move(Vector3.zero);
-					
-				bluePlayer.transform.position = playerPositions[2];
-				bluePlayer.transform.rotation = playerRotations[2];
-				bluePlayer.GetComponent<CharacterController>().Move(Vector3.zero);
+		if(newPlayer != null){
+			currentPlayer = newPlayer;
 
-				currentPlayer = redPlayer;
-			}
+		}else{
+			currentPlayer = null;
+			UpdatePositions();
+			currentPlayer = redPlayer;
+		}
 
-			currentPlayer.transform.Find("Holder/Main Camera").gameObject.SetActive(true);
+		currentPlayer.transform.Find("Holder/Main Camera").gameObject.SetActive(true);
 	}
 
 	private void FadeComplete(){
