@@ -42,7 +42,7 @@ public static class EtherObjectManager {
 			RaycastHit hit;
 			Physics.Raycast( viewPoint, point - viewPoint, out hit );
 
-			if( hit.collider.gameObject.layer != LayerMask.NameToLayer("Occluder") ) {
+			if( hit.collider != null && hit.collider.gameObject.layer != LayerMask.NameToLayer("Occluder") ) {
 				return false;
 			}
 		}
