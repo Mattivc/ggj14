@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour {
 	private GameObject swapPlayer;
 
 	private float alpha;
+	private Vector3[] playerPositions;
+	private Quaternion[] playerRotations;
 
 	void Start(){
 		currentPlayer = redPlayer;
@@ -22,6 +24,9 @@ public class PlayerController : MonoBehaviour {
 		guiTexture.pixelInset = currentRes;
 
 		alpha = guiTexture.color.a;
+
+		playerPositions = new Vector3[]{redPlayer.transform.position, yellowPlayer.transform.position, bluePlayer.transform.position};
+		playerRotations = new Quaternion[]{redPlayer.transform.rotation, yellowPlayer.transform.rotation, bluePlayer.transform.rotation};
 	}
 
 	void Update () {
@@ -63,25 +68,59 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	public void UpdateCheckpoint(Vector3 checkpointPosition, Quaternion checkpointRotation){
+		playerPositions[0] = checkpointPosition;
+		playerPositions[1] = new Vector3(checkpointPosition.x + 2f, checkpointPosition.y, checkpointPosition.z);
+		playerPositions[2] = new Vector3(checkpointPosition.x - 2f, checkpointPosition.y, checkpointPosition.z);
+
+		playerRotations[0] = checkpointRotation;
+		playerRotations[1] = checkpointRotation;
+		playerRotations[2] = checkpointRotation;
+	}
+
+	public void RestartCheckpoint(){
+		fadeOut = true;
+		swapPlayer = null;
+		FadeStart();
+	}
+
 	private void FadeStart(){
 		guiTexture.enabled = true;
 		currentPlayer.GetComponent<MouseLook>().enabled = false;
-		currentPlayer.GetComponent<CharacterMotor>().enabled = false;
+		currentPlayer.GetComponent<CharacterMotor>().canControl = false;
 		currentPlayer.GetComponent<FPSInputController>().enabled = false;
-		currentPlayer.transform.FindChild("Main Camera").gameObject.GetComponent<MouseLook>().enabled = false;
+		currentPlayer.transform.FindChild("Holder").gameObject.GetComponent<MouseLook>().enabled = false;
 	}
 
 	private void SwapPlayer(GameObject newPlayer){
-		currentPlayer.transform.FindChild("Main Camera").gameObject.SetActive(false);
-		currentPlayer = newPlayer;
-		currentPlayer.transform.FindChild("Main Camera").gameObject.SetActive(true);
+			currentPlayer.transform.Find("Holder/Main Camera").gameObject.SetActive(false);
+
+			if(newPlayer != null){
+				currentPlayer = newPlayer;
+			}else{
+				redPlayer.transform.position = playerPositions[0];
+				redPlayer.transform.rotation = playerRotations[0];
+				redPlayer.GetComponent<CharacterController>().Move(Vector3.zero);
+				
+				yellowPlayer.transform.position = playerPositions[1];
+				yellowPlayer.transform.rotation = playerRotations[1];
+				yellowPlayer.GetComponent<CharacterController>().Move(Vector3.zero);
+					
+				bluePlayer.transform.position = playerPositions[2];
+				bluePlayer.transform.rotation = playerRotations[2];
+				bluePlayer.GetComponent<CharacterController>().Move(Vector3.zero);
+
+				currentPlayer = redPlayer;
+			}
+
+			currentPlayer.transform.Find("Holder/Main Camera").gameObject.SetActive(true);
 	}
 
 	private void FadeComplete(){
 		guiTexture.enabled = false;
 		currentPlayer.GetComponent<MouseLook>().enabled = true;
-		currentPlayer.GetComponent<CharacterMotor>().enabled = true;
+		currentPlayer.GetComponent<CharacterMotor>().canControl = true;
 		currentPlayer.GetComponent<FPSInputController>().enabled = true;
-		currentPlayer.transform.FindChild("Main Camera").gameObject.GetComponent<MouseLook>().enabled = true;
+		currentPlayer.transform.FindChild("Holder").gameObject.GetComponent<MouseLook>().enabled = true;
 	}
 }

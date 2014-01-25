@@ -33,7 +33,19 @@ public class EtherObject : MonoBehaviour {
 	}
 
 	void Update() {
-		bool currentState = currentEtherState[0] == redState && currentEtherState[1] == yellowState && currentEtherState[2] == blueState;
+		//bool currentState = currentEtherState[0] == redState && currentEtherState[1] == yellowState && currentEtherState[2] == blueState;
+		bool currentState = true;
+
+		if(redState && !currentEtherState[0]){
+			currentState = false;
+		}
+		if(yellowState && !currentEtherState[1]){
+			currentState = false;
+		}
+		if(blueState && !currentEtherState[2]){
+			currentState = false;
+		}
+
 
 		if ( currentState != objectActive ) {
 			gameObject.SendMessage("ToggleEtherObject", currentState, SendMessageOptions.DontRequireReceiver );
