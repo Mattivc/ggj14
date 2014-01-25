@@ -7,6 +7,7 @@ public class HighlightObject : MonoBehaviour {
     Vector3[] vertices;
     Color[] colors;
     Bounds[] vertBounds;
+    public static Color highlightColor=new Color(1f, 0f, 0f);
 
 	void Start () {
 
@@ -34,7 +35,7 @@ public class HighlightObject : MonoBehaviour {
 
             if (GeometryUtility.TestPlanesAABB(frustum, vertBounds[i]))
             {
-                colors[i] = new Color(1f, 0f, 0f);
+                colors[i] = highlightColor;
             }
             else
                 colors[i] = new Color(1f, 1f, 1f);

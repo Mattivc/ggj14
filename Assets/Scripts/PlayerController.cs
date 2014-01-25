@@ -93,11 +93,30 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void SwapPlayer(GameObject newPlayer){
-			currentPlayer.transform.Find("Holder/Main Camera").gameObject.SetActive(false);
+        currentPlayer.transform.Find("Holder/Main Camera").camera.enabled = false;
 
-			if(newPlayer != null){
-				currentPlayer = newPlayer;
-			}else{
+            if (newPlayer != null)
+            {
+                {
+                    currentPlayer = newPlayer;
+
+                    if (currentPlayer == redPlayer)
+                    {
+                        HighlightObject.highlightColor = new Color(1f, 0f, 0f);
+                    }
+                    else if(currentPlayer == bluePlayer)
+                    {
+                        HighlightObject.highlightColor = new Color(0f, 0f, 1f);
+                    }
+                    else if(currentPlayer == redPlayer)
+                    {
+                        HighlightObject.highlightColor = new Color(1f, 1f, 0f);
+                    }  
+                    
+                }
+            }
+            else
+            {
 				redPlayer.transform.position = playerPositions[0];
 				redPlayer.transform.rotation = playerRotations[0];
 				redPlayer.GetComponent<CharacterController>().Move(Vector3.zero);
@@ -113,7 +132,7 @@ public class PlayerController : MonoBehaviour {
 				currentPlayer = redPlayer;
 			}
 
-			currentPlayer.transform.Find("Holder/Main Camera").gameObject.SetActive(true);
+			currentPlayer.transform.Find("Holder/Main Camera").camera.enabled = true;
 	}
 
 	private void FadeComplete(){
