@@ -16,6 +16,7 @@ public class FrustumUpdater : MonoBehaviour {
 		float oldView = camera.fieldOfView;
 		camera.fieldOfView = etherDetectView; // HACK
 		EtherObjectManager.UpdateFrustum( 0, GeometryUtility.CalculateFrustumPlanes( camera ) );
+        HighlightObjectManager.UpdateFrustum(GeometryUtility.CalculateFrustumPlanes(camera));
 		camera.fieldOfView = oldView;
 	}
 }

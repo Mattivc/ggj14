@@ -44,5 +44,5 @@ public class EtherObject : MonoBehaviour {
 
 		renderer.material.color = Color.Lerp( renderer.material.color, new Color( objectColor.r, objectColor.g, objectColor.b, alpha), 5f * Time.deltaTime );
 	}
-	
+
 }
