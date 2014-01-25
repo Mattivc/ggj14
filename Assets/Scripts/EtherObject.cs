@@ -16,9 +16,11 @@ public class EtherObject : MonoBehaviour {
 
 	void Awake() {
 		currentEtherState = new bool[]{ false, false, false };
+
+		SetEtherLayer();
 	}
 
-	void Start() {
+	void  Start() {
 		renderer.material.color = objectColor;
 	}
 
@@ -36,6 +38,11 @@ public class EtherObject : MonoBehaviour {
 		if ( currentState != objectActive ) {
 			gameObject.SendMessage("ToggleEtherObject", currentState, SendMessageOptions.DontRequireReceiver );
 			objectActive = currentState;
+			if(!currentState){
+				SetEtherLayer();
+			}else{
+				gameObject.layer = LayerMask.NameToLayer("Default");
+			}
 		}
 	}
 
@@ -44,5 +51,22 @@ public class EtherObject : MonoBehaviour {
 
 		renderer.material.color = Color.Lerp( renderer.material.color, new Color( objectColor.r, objectColor.g, objectColor.b, alpha), 5f * Time.deltaTime );
 	}
-	
+
+	private void SetEtherLayer(){
+		if ( redState && !yellowState && !blueState )  { // RED
+			gameObject.layer = LayerMask.NameToLayer("Red");
+		} else if ( !redState && yellowState && !blueState ) { // YELLOW
+			gameObject.layer = LayerMask.NameToLayer("Yellow");
+		} else if ( !redState && !yellowState && blueState ) { // BLUE
+			gameObject.layer = LayerMask.NameToLayer("Blue");
+		} else if ( redState && yellowState && !blueState ) { // ORANGE
+			gameObject.layer = LayerMask.NameToLayer("Orange");
+		} else if ( !redState && yellowState && blueState ) { // GREEN
+			gameObject.layer = LayerMask.NameToLayer("Green");
+		} else if ( redState && !yellowState && blueState ) { // PURPLE
+			gameObject.layer = LayerMask.NameToLayer("Purple");
+		} else {
+			gameObject.layer = LayerMask.NameToLayer("Default");
+		}
+	}
 }

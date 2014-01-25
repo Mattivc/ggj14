@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour {
 	public GameObject yellowPlayer;
 	public GameObject bluePlayer;
 
-	//public GUITexture fade;
 	private bool fadeIn = false;
 	private bool fadeOut = false;
 
@@ -44,7 +43,7 @@ public class PlayerController : MonoBehaviour {
 
 		if(fadeOut){
 			if(guiTexture.color.a < 1f){
-				alpha = Mathf.Lerp (alpha, 1.1f, Time.deltaTime*1.2f);
+				alpha = Mathf.Lerp (alpha, 1.1f, Time.deltaTime*4f);
 				guiTexture.color = new Color(0f, 0f, 0f, alpha);
 			}else{
 				guiTexture.color = new Color(0f, 0f, 0f, 1f);
@@ -54,7 +53,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}else if(fadeIn){
 			if(guiTexture.color.a > 0f){
-				alpha = Mathf.Lerp (alpha, -0.1f, Time.deltaTime*1.2f);
+				alpha = Mathf.Lerp (alpha, -0.1f, Time.deltaTime*4f);
 				guiTexture.color = new Color(0f, 0f, 0f, alpha);
 			}else{
 				guiTexture.color = new Color(0f, 0f, 0f, 0f);
@@ -65,7 +64,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void FadeStart(){
-		Debug.Log ("FadeStart");
 		guiTexture.enabled = true;
 		currentPlayer.GetComponent<MouseLook>().enabled = false;
 		currentPlayer.GetComponent<CharacterMotor>().enabled = false;
@@ -74,14 +72,12 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void SwapPlayer(GameObject newPlayer){
-		Debug.Log("SwapPlayer");
 		currentPlayer.transform.FindChild("Main Camera").gameObject.SetActive(false);
 		currentPlayer = newPlayer;
 		currentPlayer.transform.FindChild("Main Camera").gameObject.SetActive(true);
 	}
 
 	private void FadeComplete(){
-		Debug.Log ("FadeComplete");
 		guiTexture.enabled = false;
 		currentPlayer.GetComponent<MouseLook>().enabled = true;
 		currentPlayer.GetComponent<CharacterMotor>().enabled = true;
